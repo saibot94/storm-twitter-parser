@@ -15,11 +15,12 @@ repositories {
 
 dependencies {
     compile "org.apache.storm:storm-core:1.0.2"
+    compile "org.twitter4j:twitter4j-stream:3.0.3"
 }
 
 jar {
     manifest {
-        attributes "Main-Class": "cristis.stormproj.ExclamationExample"
+        attributes "Main-Class": "cristis.stormproj.twitter.TwitterTopology"
     }
 
     from {
