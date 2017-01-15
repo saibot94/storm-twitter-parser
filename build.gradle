@@ -16,6 +16,10 @@ repositories {
 dependencies {
     compile "org.apache.storm:storm-core:1.0.2"
     compile "org.twitter4j:twitter4j-stream:3.0.3"
+    compile "mysql:mysql-connector-java:5.1.6"
+    compile "org.projectlombok:lombok:1.16.12"
+
+    testCompile 'junit:junit:4.12'
 }
 
 jar {

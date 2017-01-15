@@ -31,7 +31,22 @@ public class TwitterParseBolt extends BaseRichBolt {
     @Override
     public void execute(Tuple input) {
         Status twitterStatus = (Status) input.getValue(0);
-        collector.emit(new Values(twitterStatus.getId()));
+        Double latitude = null;
+        Double longitude = null;
+        if(twitterStatus.getGeoLocation() != null){
+            longitude = twitterStatus.getGeoLocation().getLongitude();
+            latitude = twitterStatus.getGeoLocation().getLatitude();
+        }
+        TweetObj tweetObj = new TweetObj(
+                twitterStatus.getId(),
+                twitterStatus.getCreatedAt(),
+                twitterStatus.getText(),
+                twitterStatus.getUser().getName(),
+                latitude,
+                longitude);
+
+        collector.emit(new Values(tweetObj));
+
     }
 
     @Override

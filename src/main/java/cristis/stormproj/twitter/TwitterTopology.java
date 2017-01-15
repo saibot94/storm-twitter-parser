@@ -1,5 +1,6 @@
 package cristis.stormproj.twitter;
 
+import cristis.stormproj.db.JdbcTwitterInsertBolt;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.topology.IRichSpout;
@@ -24,23 +25,34 @@ public class TwitterTopology {
                 new String[]{}
         );
     }
+    private static IRichSpout buildTwitterSpout(String[] keywords) {
+        return new TwitterSpout(
+                consumerKey,
+                consumerSecret,
+                accessToken,
+                accessTokenSecret,
+                keywords
+        );
+    }
 
     public static void main(String[] args) {
 
         TopologyBuilder builder = new TopologyBuilder();
-        IRichSpout spout = buildTwitterSpout();
-        builder.setSpout("tweetspout", spout, 2);
-        builder.setBolt("printbolt", new TwitterParseBolt())
+        IRichSpout spout = buildTwitterSpout(new String[]{"spacex", "elon musk"});
+        builder.setSpout("tweetspout", spout, 1);
+        builder.setBolt("parsebolt", new TwitterParseBolt(), 5)
                 .shuffleGrouping("tweetspout");
+        builder.setBolt("sqlBolt", new JdbcTwitterInsertBolt(), 2)
+                .shuffleGrouping("parsebolt");
 
         LocalCluster cluster = new LocalCluster();
         Config config = new Config();
-        config.setNumWorkers(2);
+        config.setNumWorkers(3);
         config.setDebug(true);
 
 
         cluster.submitTopology("testtwitter", config, builder.createTopology());
-        Utils.sleep(10000);
+        Utils.sleep(100000);
         cluster.killTopology("testtwitter");
         cluster.shutdown();
     }
