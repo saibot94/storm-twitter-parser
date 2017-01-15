@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'idea'
+}
+
+
+apply plugin : 'java'
+apply plugin : 'idea'
+
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile "org.apache.storm:storm-core:1.0.2"
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "cristis.stormproj.ExclamationExample"
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
