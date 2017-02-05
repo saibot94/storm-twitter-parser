@@ -92,9 +92,8 @@ public class TwitterSpout extends BaseRichSpout {
         Status stat = statuses.poll();
         if(stat != null) {
             collector.emit(new Values(stat));
-        } else {
-            Utils.sleep(100);
         }
+        Utils.sleep(200);
     }
 
     @Override

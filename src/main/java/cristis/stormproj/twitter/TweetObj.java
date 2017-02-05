@@ -17,6 +17,8 @@ public class TweetObj implements Serializable {
     private Date createdAt;
     private String text;
     private String username;
+    private String country = null;
+    private String placeFullName = null;
     private Double latitude = null;
     private Double longitude = null;
 }

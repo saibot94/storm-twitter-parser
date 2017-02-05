@@ -33,15 +33,23 @@ public class TwitterParseBolt extends BaseRichBolt {
         Status twitterStatus = (Status) input.getValue(0);
         Double latitude = null;
         Double longitude = null;
-        if(twitterStatus.getGeoLocation() != null){
+        String country = null;
+        String placeName = null;
+        if (twitterStatus.getGeoLocation() != null) {
             longitude = twitterStatus.getGeoLocation().getLongitude();
             latitude = twitterStatus.getGeoLocation().getLatitude();
+        }
+        if (twitterStatus.getPlace() != null) {
+            country = twitterStatus.getPlace().getCountry();
+            placeName = twitterStatus.getPlace().getFullName();
         }
         TweetObj tweetObj = new TweetObj(
                 twitterStatus.getId(),
                 twitterStatus.getCreatedAt(),
                 twitterStatus.getText(),
                 twitterStatus.getUser().getName(),
+                country,
+                placeName,
                 latitude,
                 longitude);
 
