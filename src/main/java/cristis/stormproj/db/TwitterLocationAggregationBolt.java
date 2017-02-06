@@ -1,5 +1,6 @@
 package cristis.stormproj.db;
 
+import cristis.stormproj.constants.Constants;
 import cristis.stormproj.twitter.TweetObj;
 import org.apache.storm.task.OutputCollector;
 import org.apache.storm.task.TopologyContext;
@@ -16,9 +17,7 @@ import java.util.Map;
  * Created by darkg on 2/5/2017.
  */
 public class TwitterLocationAggregationBolt extends BaseRichBolt {
-    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/tweetdb?useUnicode=true&characterEncoding=utf8";
     private static final String TABLE_NAME = "tweetplaces";
-    private static final String user = "root";
 
     private OutputCollector collector;
     private Connection connection;
@@ -35,7 +34,7 @@ public class TwitterLocationAggregationBolt extends BaseRichBolt {
     public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         this.collector = collector;
         try {
-            this.connection = DriverManager.getConnection(jdbcUrl, user, null);
+            this.connection = DriverManager.getConnection(Constants.JDBCURL, Constants.USER, Constants.PASSWORD);
             connection.setAutoCommit(true);
             Statement stmt = connection.createStatement();
             stmt.execute("drop table if exists " + TABLE_NAME);

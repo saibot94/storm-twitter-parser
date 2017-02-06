@@ -1,5 +1,6 @@
 package cristis.stormproj.db;
 
+import cristis.stormproj.constants.Constants;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,9 +22,7 @@ public class JdbcConnectionTest {
 
     @Test
     public void tryConnectToJdbc() {
-        String jdbcUrl = "jdbc:mysql://localhost:3306/tweetdb";
-        String user = "root";
-        try (Connection conn = DriverManager.getConnection(jdbcUrl, user, null)) {
+        try (Connection conn = DriverManager.getConnection(Constants.JDBCURL, Constants.USER, Constants.PASSWORD)) {
             Statement stmt  = conn.createStatement();
             ResultSet res = stmt.executeQuery("show databases");
             while(res.next()) {
