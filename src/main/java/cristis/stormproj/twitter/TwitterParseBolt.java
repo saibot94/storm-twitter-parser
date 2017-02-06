@@ -11,8 +11,10 @@ import org.apache.storm.topology.base.BaseRichSpout;
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
 import org.apache.storm.tuple.Values;
+import twitter4j.HashtagEntity;
 import twitter4j.Status;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -43,6 +45,13 @@ public class TwitterParseBolt extends BaseRichBolt {
             country = twitterStatus.getPlace().getCountry();
             placeName = twitterStatus.getPlace().getFullName();
         }
+        HashtagEntity[] entities = twitterStatus.getHashtagEntities();
+        ArrayList<String> hashtags = new ArrayList<>();
+        if (entities != null) {
+            for (HashtagEntity entity : entities) {
+                hashtags.add(entity.getText());
+            }
+        }
         TweetObj tweetObj = new TweetObj(
                 twitterStatus.getId(),
                 twitterStatus.getCreatedAt(),
@@ -50,6 +59,7 @@ public class TwitterParseBolt extends BaseRichBolt {
                 twitterStatus.getUser().getName(),
                 country,
                 placeName,
+                hashtags,
                 latitude,
                 longitude);
 

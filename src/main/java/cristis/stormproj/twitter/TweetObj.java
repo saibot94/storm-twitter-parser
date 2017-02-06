@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -19,6 +20,7 @@ public class TweetObj implements Serializable {
     private String username;
     private String country = null;
     private String placeFullName = null;
+    private ArrayList<String> hashtags = null;
     private Double latitude = null;
     private Double longitude = null;
 }

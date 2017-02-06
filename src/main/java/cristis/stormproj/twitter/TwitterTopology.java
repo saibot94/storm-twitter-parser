@@ -1,6 +1,7 @@
 package cristis.stormproj.twitter;
 
 import cristis.stormproj.db.JdbcTwitterInsertBolt;
+import cristis.stormproj.db.TwitterHashtagAggregationBolt;
 import cristis.stormproj.db.TwitterLocationAggregationBolt;
 import org.apache.storm.Config;
 import org.apache.storm.LocalCluster;
@@ -46,6 +47,8 @@ public class TwitterTopology {
         builder.setBolt("sqlBolt", new JdbcTwitterInsertBolt(), 2)
                 .shuffleGrouping("parsebolt");
         builder.setBolt("placeAggregateBolt", new TwitterLocationAggregationBolt())
+                .shuffleGrouping("parsebolt");
+        builder.setBolt("hashtagAggregateBolt", new TwitterHashtagAggregationBolt())
                 .shuffleGrouping("parsebolt");
 
         LocalCluster cluster = new LocalCluster();

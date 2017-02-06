@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class JdbcTwitterInsertBolt extends BaseRichBolt {
 
-    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/tweetdb";
+    private static final String jdbcUrl = "jdbc:mysql://localhost:3306/tweetdb?useUnicode=true&characterEncoding=utf8";
     private static final String TABLE_NAME = "tweets";
     private static final String user = "root";
     private static final java.text.SimpleDateFormat sdf =
@@ -41,8 +41,8 @@ public class JdbcTwitterInsertBolt extends BaseRichBolt {
             stmt.execute("CREATE TABLE IF NOT EXISTS " + TABLE_NAME
                     + "(id BIGINT PRIMARY KEY,"
                     + "created_at datetime NOT NULL,"
-                    + "text varchar(256) NOT NULL,"
-                    + "username varchar(256) NOT NULL,"
+                    + "text varchar(256) CHARACTER SET utf8 NOT NULL,"
+                    + "username varchar(256) CHARACTER SET utf8 NOT NULL,"
                     + "latitude DECIMAL,"
                     + "longitude DECIMAL)"
             );
